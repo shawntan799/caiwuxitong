@@ -48,7 +48,8 @@ export default function SalaryCalculation() {
         },
         body: JSON.stringify({
           month: "2024-03",
-          employeeIds: employees.map(emp => emp.id)
+          employeeIds: employees.map(emp => emp.id),
+          employees: employees // 传递完整的员工数据
         }),
       })
 

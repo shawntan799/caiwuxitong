@@ -66,11 +66,23 @@ export function calculateSocialInsurance(salary: number) {
  */
 export function calculateTax(taxableIncome: number) {
   if (taxableIncome <= 0) return 0;
-  
-  // 查找适用的税率档位
-  const bracket = TAX_BRACKETS.find(b => taxableIncome > b.min && taxableIncome <= b.max);
-  if (!bracket) return 0;
-  
-  // 计算税额
-  return taxableIncome * bracket.rate - bracket.deduction;
+
+  // 按照中国大陆工资薪金个税速算扣除数表，区间包含下限，排除上限
+  let rate = 0, deduction = 0;
+  if (taxableIncome <= 3000) {
+    rate = 0.03; deduction = 0;
+  } else if (taxableIncome <= 12000) {
+    rate = 0.10; deduction = 210;
+  } else if (taxableIncome <= 25000) {
+    rate = 0.20; deduction = 1410;
+  } else if (taxableIncome <= 35000) {
+    rate = 0.25; deduction = 2660;
+  } else if (taxableIncome <= 55000) {
+    rate = 0.30; deduction = 4410;
+  } else if (taxableIncome <= 80000) {
+    rate = 0.35; deduction = 7160;
+  } else {
+    rate = 0.45; deduction = 15160;
+  }
+  return Math.max(0, taxableIncome * rate - deduction);
 } 

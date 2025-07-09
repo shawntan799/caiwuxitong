@@ -1,12 +1,19 @@
 import { NextResponse } from 'next/server';
 import { calculateTax, calculateSocialInsurance } from '@/lib/payroll';
 
+// 从localStorage获取员工数据的辅助函数
+const getEmployeesFromStorage = () => {
+  // 在服务器端，我们无法直接访问localStorage
+  // 所以我们需要从请求中获取员工数据
+  return null;
+};
+
 export async function POST(req: Request) {
   try {
-    const { month, employeeIds } = await req.json();
+    const { month, employeeIds, employees } = await req.json();
 
-    // 模拟员工数据
-    const mockEmployees = [
+    // 使用从客户端传递的员工数据，如果没有则使用默认数据
+    const employeeData = employees || [
       { id: "1", name: "张三", department: "技术部", position: "高级工程师", baseSalary: 15000 },
       { id: "2", name: "李四", department: "销售部", position: "销售经理", baseSalary: 12000 },
       { id: "3", name: "王五", department: "财务部", position: "会计师", baseSalary: 10000 },
@@ -23,7 +30,7 @@ export async function POST(req: Request) {
 
     // 为每个员工计算工资
     for (const employeeId of employeeIds) {
-      const employee = mockEmployees.find(emp => emp.id === employeeId);
+      const employee = employeeData.find((emp: any) => emp.id === employeeId);
       
       if (!employee) {
         continue;

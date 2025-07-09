@@ -531,7 +531,17 @@ export default function FinanceManagementSystem() {
                           ? "bg-blue-100 text-blue-700"
                           : "text-muted-foreground hover:text-foreground hover:bg-gray-50"
                       }`}
-                      onClick={() => setActiveModule(child.id)}
+                      onClick={() => {
+                        if(child.id === "general-ledger") {
+                          router.push("/finance/ledger")
+                        } else if(child.id === "accounts-receivable") {
+                          router.push("/finance/receivable")
+                        } else if(child.id === "accounts-payable") {
+                          router.push("/finance/payable")
+                        } else {
+                          setActiveModule(child.id)
+                        }
+                      }}
                     >
                       {child.label}
                     </button>
